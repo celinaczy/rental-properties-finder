@@ -1,5 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
+from selenium import webdriver
+from selenium.webdriver.common.by import By
 import os
 import re
 
@@ -26,7 +28,19 @@ property_addresses = [property_address.text.replace('\n','').replace('  ', '') f
 # get property prices
 property_price_tags = soup.find_all(class_="StyledPropertyCardDataArea-fDSTNn")
 property_prices = [re.sub("[^0-9]", "", property_price.text) for property_price in property_price_tags]
-print(property_prices)
+# print(property_prices)
 
 # check if all lists have the same length
-print(len(property_links), len(property_addresses), len(property_prices))
+# print(len(property_links), len(property_addresses), len(property_prices))
+
+# set up selenium web driver
+chrome_options = webdriver.ChromeOptions()
+chrome_options.add_experimental_option('detach', True)
+
+driver = webdriver.Chrome(options=chrome_options)
+
+driver.get(form_link)
+inputs = driver.find_elements(By.CSS_SELECTOR, value="input.whsOnd.zHQkBf")
+for i in inputs:
+    if i.is_displayed() and i.is_enabled():
+        i.send_keys('a')
