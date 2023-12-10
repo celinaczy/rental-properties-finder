@@ -27,34 +27,34 @@ property_addresses = [property_address.text.replace('\n','').replace('  ', '') f
 
 # get property prices
 property_price_tags = soup.find_all(class_="StyledPropertyCardDataArea-fDSTNn")
-property_prices = [re.sub("[^0-9]", "", property_price.text) for property_price in property_price_tags]
-# print(property_prices)
+property_prices = [property_price.text.replace('\n', '')[:6] for property_price in property_price_tags]
+print(property_prices)
 
 # check if all lists have the same length
 # print(len(property_links), len(property_addresses), len(property_prices))
 
 # set up selenium web driver
-chrome_options = webdriver.ChromeOptions()
-chrome_options.add_experimental_option('detach', True)
-
-driver = webdriver.Chrome(options=chrome_options)
-for index in range(len(property_prices)):
-    driver.get(form_link)
-    time.sleep(0.2)
-    inputs = driver.find_elements(By.CSS_SELECTOR, value="input.whsOnd.zHQkBf")
-    n = 0
-    for i in inputs:
-        if i.is_displayed() and i.is_enabled():
-            n += 1
-            if n ==1:
-                i.send_keys(property_addresses[index])
-            if n ==2:
-                i.send_keys(property_prices[index])
-            if n ==3:
-                i.send_keys(property_links[index])
-
-    submit_btn = driver.find_element(By.CSS_SELECTOR, value=".NPEfkd.RveJvd.snByac")
-    submit_btn.click()
-    print(index)
-
-driver.quit()
+# chrome_options = webdriver.ChromeOptions()
+# chrome_options.add_experimental_option('detach', True)
+#
+# driver = webdriver.Chrome(options=chrome_options)
+# for index in range(len(property_prices)):
+#     driver.get(form_link)
+#     time.sleep(0.2)
+#     inputs = driver.find_elements(By.CSS_SELECTOR, value="input.whsOnd.zHQkBf")
+#     n = 0
+#     for i in inputs:
+#         if i.is_displayed() and i.is_enabled():
+#             n += 1
+#             if n ==1:
+#                 i.send_keys(property_addresses[index])
+#             if n ==2:
+#                 i.send_keys(property_prices[index])
+#             if n ==3:
+#                 i.send_keys(property_links[index])
+#
+#     submit_btn = driver.find_element(By.CSS_SELECTOR, value=".NPEfkd.RveJvd.snByac")
+#     submit_btn.click()
+#     print(index)
+#
+# driver.quit()
