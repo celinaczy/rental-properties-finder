@@ -3,7 +3,6 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 import time
-import os
 import re
 
 zillow_link = "https://appbrewery.github.io/Zillow-Clone/"
@@ -39,20 +38,23 @@ chrome_options = webdriver.ChromeOptions()
 chrome_options.add_experimental_option('detach', True)
 
 driver = webdriver.Chrome(options=chrome_options)
-index = 0
-driver.get(form_link)
-time.sleep(2)
-inputs = driver.find_elements(By.CSS_SELECTOR, value="input.whsOnd.zHQkBf")
-n = 0
-for i in inputs:
-    if i.is_displayed() and i.is_enabled():
-        n += 1
-        if n ==1:
-            i.send_keys(property_addresses[index])
-        if n ==2:
-            i.send_keys(property_prices[index])
-        if n ==3:
-            i.send_keys(property_links[index])
+for index in range(len(property_prices)):
+    driver.get(form_link)
+    time.sleep(0.2)
+    inputs = driver.find_elements(By.CSS_SELECTOR, value="input.whsOnd.zHQkBf")
+    n = 0
+    for i in inputs:
+        if i.is_displayed() and i.is_enabled():
+            n += 1
+            if n ==1:
+                i.send_keys(property_addresses[index])
+            if n ==2:
+                i.send_keys(property_prices[index])
+            if n ==3:
+                i.send_keys(property_links[index])
 
+    submit_btn = driver.find_element(By.CSS_SELECTOR, value=".NPEfkd.RveJvd.snByac")
+    submit_btn.click()
+    print(index)
 
-
+driver.quit()
