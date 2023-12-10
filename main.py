@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import os
+import re
 
 zillow_link = "https://appbrewery.github.io/Zillow-Clone/"
 form_link = "https://forms.gle/S5ubcDPky2sce2Dg9"
@@ -24,8 +25,8 @@ property_addresses = [property_address.text.replace('\n','').replace('  ', '') f
 
 # get property prices
 property_price_tags = soup.find_all(class_="StyledPropertyCardDataArea-fDSTNn")
-property_prices = [property_price.text.replace('\n', '').replace('+/mo', '') for property_price in property_price_tags]
-# print(property_prices)
+property_prices = [re.sub("[^0-9]", "", property_price.text) for property_price in property_price_tags]
+print(property_prices)
 
 # check if all lists have the same length
 print(len(property_links), len(property_addresses), len(property_prices))
