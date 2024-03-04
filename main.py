@@ -8,7 +8,6 @@ import re
 zillow_link = "https://appbrewery.github.io/Zillow-Clone/"
 form_link = "https://forms.gle/S5ubcDPky2sce2Dg9"
 
-
 response = requests.get(zillow_link)
 zillow_webpage = response.text
 
@@ -22,8 +21,9 @@ property_links = [property_link.get('href') for property_link in property_link_t
 
 # get property addresses
 property_address_tags = soup.find_all("address")
-property_addresses = [property_address.text.replace('\n','').replace('  ', '') for property_address in property_address_tags]
-#print(property_addresses)
+property_addresses = [property_address.text.replace('\n', '').replace('  ', '') for property_address in
+                      property_address_tags]
+# print(property_addresses)
 
 # get property prices
 property_price_tags = soup.find_all(class_="StyledPropertyCardDataArea-fDSTNn")
@@ -46,11 +46,11 @@ for index in range(len(property_prices)):
     for i in inputs:
         if i.is_displayed() and i.is_enabled():
             n += 1
-            if n ==1:
+            if n == 1:
                 i.send_keys(property_addresses[index])
-            if n ==2:
+            if n == 2:
                 i.send_keys(property_prices[index])
-            if n ==3:
+            if n == 3:
                 i.send_keys(property_links[index])
 
     submit_btn = driver.find_element(By.CSS_SELECTOR, value=".NPEfkd.RveJvd.snByac")
